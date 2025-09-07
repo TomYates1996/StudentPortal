@@ -12,12 +12,12 @@ exports.registerStudent = async (req, res) => {
         const passwordHash = await bcrypt.hash(password, salt);
 
         const student = new User({
-        name,
-        email,
-        passwordHash,
-        role: "student",
-        schoolId,
-        createdById 
+            name,
+            email,
+            passwordHash,
+            role: "student",
+            schoolId,
+            createdById 
         });
 
         await student.save();
