@@ -5,6 +5,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const School = require("../models/School");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const authMiddleware = require('../middleware/authMiddleware');
 
 const priceMap = {
   Starter: 4900,
@@ -110,5 +111,23 @@ router.get('/checkout-session/:id', async (req, res) => {
         res.status(500).json({ message: 'Could not fetch session' });
     }
 });
+
+// Get the school name
+router.get('/:id', async (req, res) => {
+    try {
+        const school = await School.findById(req.params.id);
+        if (!school) return res.status(404).json({ message: 'School not found' });
+        res.json(school);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+// Add an educator
+router.post('/:schoolId/add-educator', authMiddleware, schoolController.addEducator);
+
+// Get the educators
+router.get('/:schoolId/educators', authMiddleware, schoolController.getEducators);
 
 module.exports = router;

@@ -5,29 +5,31 @@
 }
 
 :root {
-    --primary: #FF9F1C;    /* Sunrise Orange */
-    --secondary: #FFD23F;  /* Golden Yellow */
-    --tertiary: #F5E6CC;   /* Light Sand Beige */
-    --accent: #4f0876;     /* Dark Purple */
+    --primary: #6C63FF; 
+    --secondary: #FFD6F6;
+    --tertiary: #F9F9F9; 
+    --accent: #4F4F4F;    
 
-    --white: #FFFFFF;    /* White */
-    --black: #000000;    /* Black */
+    --white: #FFFFFF;       /* White */
+    --black: #000000;       /* Black */
 
     /* Backgrounds */
-    --background: var(--secondary);
-    
-    /* Text Colors */
-    --text-heading: #333333; /* Charcoal Gray */
-    --text-body: #4A4A4A;    /* Slightly softer than headings */
-    --text-muted: #7A7A7A;   /* For placeholders, secondary text */
+    --background: var(--tertiary);
 
+    /* Text Colors */
+    --text-heading: #333333; 
+    --text-body: #4A4A4A;    
+    --text-muted: #7A7A7A;   
+
+    /* Buttons */
     --button-colour: var(--primary);
-    --button-text: var(--accent);
-    --button-colour-hover: var(--tertiary);
-    --button-text-hover: var(--black);
-    --button-active: var(--accent);
+    --button-text: var(--white);
+    --button-colour-hover: #574fd6; 
+    --button-text-hover: var(--white);
+    --button-active: #3f3acc;         
     --button-active-text: var(--white);
 }
+
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

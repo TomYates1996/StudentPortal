@@ -52,7 +52,7 @@ const StudentLoginPage = () => {
                         type="submit"
                         className="base-btn"
                     >
-                        Go
+                        Login
                     </button>
                 </form>
                 <p className="form-link-wrap">

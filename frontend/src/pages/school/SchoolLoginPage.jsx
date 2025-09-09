@@ -14,13 +14,18 @@ const SchoolLoginPage = () => {
         setError(null);
 
         try {
-            const res = await api.post("/auth/login", { email, password });
+            const res = await api.post("/auth/school/login", { email, password });
+
             localStorage.setItem("token", res.data.token);
-            localStorage.setItem("role", res.data.user.role);
+            localStorage.setItem("role", res.data.role);
+            localStorage.setItem("schoolId", res.data.schoolId);
+            localStorage.setItem("email", res.data.email);
+            localStorage.setItem("schoolName", res.data.schoolName);
 
             navigate("/school/dashboard");
         } catch (err) {
-            setError(err.response?.data?.msg || "Login failed");
+            console.error("Login error:", err);
+            setError(err.response?.data?.message || "Login failed");
         }
     };
 
@@ -51,7 +56,7 @@ const SchoolLoginPage = () => {
                         type="submit"
                         className="base-btn"
                     >
-                        Go
+                        Login
                     </button>
                 </form>
                 <p className="form-link-wrap">

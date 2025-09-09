@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const School = require("../models/School");
 
 exports.loginSchool = async (req, res) => {
     const { email, password } = req.body;
@@ -16,13 +17,22 @@ exports.loginSchool = async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.passwordHash);
         if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
+        const school = await School.findById(user.schoolId);
+
         const token = jwt.sign(
-            { id: user._id, email: user.email, role: user.role, schoolId: user.schoolId },
+            { id: user._id, name: user.name, email: user.email, role: user.role, schoolId: user.schoolId },
             process.env.JWT_SECRET,
             { expiresIn: "7d" }
         );
 
-        res.json({ token, role: user.role, schoolId: user.schoolId });
+        res.json({
+            token,
+            role: user.role,
+            name: user.name,
+            schoolId: user.schoolId,
+            email: user.email,
+            schoolName: school ? school.name : "Unknown School",
+        });
     } catch (err) {
         console.error("School login error:", err);
         res.status(500).json({ message: "Server error" });
