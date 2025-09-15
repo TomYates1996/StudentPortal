@@ -58,6 +58,49 @@ router.post("/create-payment-session", async (req, res) => {
     }
 });
 
+// Create Stripe Checkout for Course Purchase
+router.post("/purchase-course", async (req, res) => {
+    const { schoolId, title, courseId, userEmail } = req.body;
+
+    // VERIFY THE COURSE ID WHEN YOU GET INTERNET AGAIN AND SORT IT PROPERLY
+    // if (!courses[courseId]) {
+    //     return res.status(400).json({ message: "Invalid tier selected" });
+    // }
+
+    try {
+        const school = await School.findById(schoolId);
+        if (!school) return res.status(400).json({ message: "School not found" });
+
+        const session = await stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        mode: "payment",
+        customer_email: userEmail,
+        line_items: [
+            {
+            price_data: {
+                currency: "gbp",
+                product_data: { name: `${title} for ${school.name}` },
+                // Set this unit amout from the course data - search the db for the id and grab it
+                unit_amount: 50000,
+            },
+            quantity: 1,
+            },
+        ],
+        success_url: `${process.env.CLIENT_URL}/school/course-purchase-success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${process.env.CLIENT_URL}/school/browse-courses?canceled=true`,
+        metadata: {
+            schoolId: school._id.toString(),
+            title,
+        },
+        });
+
+        res.json({ checkoutUrl: session.url });
+    } catch (err) {
+        console.error("Stripe session error:", err);
+        res.status(500).json({ message: "Could not create payment session" });
+    }
+});
+
 router.post("/complete-registration", async (req, res) => {
     const { sessionId } = req.body;
 

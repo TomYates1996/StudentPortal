@@ -1,5 +1,69 @@
 const User = require("../models/User");
+const Class = require("../models/Class");
+const School = require("../models/School");
 const bcrypt = require("bcryptjs");
+
+// Create new student
+exports.createStudent = async (req, res) => {
+    try {
+        const { name, email, password, schoolId, classId } = req.body;
+        const requester = req.user; 
+
+        if (!["schoolAdmin", "educator"].includes(requester.role)) {
+        return res.status(403).json({ message: "Not authorized" });
+        }
+
+        const existing = await User.findOne({ email });
+        if (existing) {
+        return res.status(400).json({ message: "Email already registered" });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newStudent = new User({
+        name,
+        email,
+        passwordHash: hashedPassword,
+        role: "student",
+        schoolId,
+        });
+
+        await newStudent.save();
+
+        if (classId) {
+        const classObj = await Class.findById(classId);
+        if (classObj) {
+            classObj.studentIds.push(newStudent._id);
+            await classObj.save();
+        }
+        }
+
+        res.status(201).json({
+        message: "Student created successfully",
+        student: {
+            id: newStudent._id,
+            name: newStudent.name,
+            email: newStudent.email,
+            role: newStudent.role,
+        },
+        });
+    } catch (err) {
+        console.error("Create student error:", err);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+// Get all students in school
+exports.getStudentsBySchool = async (req, res) => {
+    try {
+        const { schoolId } = req.params;
+        const students = await User.find({ schoolId, role: "student" });
+        res.json(students);
+    } catch (err) {
+        console.error("Get students error:", err);
+        res.status(500).json({ message: "Server error" });
+    }
+};
 
 exports.registerStudent = async (req, res) => {
     const { name, email, password, schoolId, createdById } = req.body;

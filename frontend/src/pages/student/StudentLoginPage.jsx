@@ -28,10 +28,10 @@ const StudentLoginPage = () => {
     return (
         <main className="page">
             <SectionTabs />
-            <section className="student-login-wrapper login-wrapper">
+            <section className="student-login-wrapper form-wrapper login-wrapper">
                 <h2 className="login-text">Student Login</h2>
                 {error && <p className="login-failed">{error}</p>}
-                <form onSubmit={handleSubmit} className="login-form">
+                <form onSubmit={handleSubmit} className="form login-form">
                     <input
                         type="email"
                         placeholder="Email"

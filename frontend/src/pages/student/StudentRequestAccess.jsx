@@ -24,45 +24,13 @@ const StudentRequestAccess = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="page student-access-request">
+            <img src="../../../public/student-portal-logo.png" alt="" />
             <SectionTabs />
-            <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-                <h2 className="text-2xl font-bold mb-6 text-center">Request Access</h2>
-                {message && <p className="text-center text-blue-600 mb-4">{message}</p>}
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <input
-                        type="text"
-                        name="name"
-                        placeholder="Full Name"
-                        value={form.name}
-                        onChange={handleChange}
-                        className="w-full p-2 border rounded"
-                        required
-                    />
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        value={form.email}
-                        onChange={handleChange}
-                        className="w-full p-2 border rounded"
-                        required
-                    />
-                    <input
-                        type="text"
-                        name="schoolId"
-                        placeholder="School ID (optional)"
-                        value={form.schoolId}
-                        onChange={handleChange}
-                        className="w-full p-2 border rounded"
-                    />
-                    <button
-                        type="submit"
-                        className="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700"
-                    >
-                        Submit Request
-                    </button>
-                </form>
+            <div className="form-wrapper">
+                <h2 className="">Request Access</h2>
+                {message && <p className="">{message}</p>}
+                Please speak to your teacher to recieve access.
             </div>
         </div>
     );

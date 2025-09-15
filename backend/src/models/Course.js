@@ -1,45 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const courseSchema = new mongoose.Schema({
-title: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    description: {
-        type: String,
-        trim: true
-    },
-    price: {
-        type: Number,
-        required: true,
-        min: 0
-    },
-    educatorId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    },
-    schoolIds: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'School'
-    }],
-    status: {
-        type: String,
-        enum: ['pendingApproval', 'active', 'archived'],
-        default: 'pendingApproval'
-    },
-    studentsEnrolled: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }],
-    schedule: {
-        type: String
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
-});
+    title: { type: String, required: true },
+    shortDescription: { type: String, required: true },
+    description: { type: String },
+    price: { type: Number, required: true },   
+    courseLength: { type: Number },            
+    imageUrl: { type: String },
+    subject: { type: String, enum: ["computer science", "maths", "english", "history", "other"], default: "other" },
+    status: { type: String, enum: ["active", "draft", "archived"], default: "active" },
+    modules: [{ type: mongoose.Schema.Types.ObjectId, ref: "Module" }],
+}, { timestamps: true });
 
-module.exports = mongoose.model('Course', courseSchema);
+module.exports = mongoose.model("Course", courseSchema);

@@ -10,6 +10,7 @@ import SchoolDashboard from "./pages/dashboards/SchoolDashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import TiersPage from "./pages/school/TiersPage";
 import RegisterSuccess from './pages/school/RegisterSuccess';
+import BrowseCourses from './pages/school/BrowseCourses';
 
 function App() {
     const token = localStorage.getItem("token");
@@ -53,6 +54,14 @@ function App() {
                         <PrivateRoute>
                             <SchoolDashboard />
                         </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/school/browse-courses"
+                    element={
+                        // <PrivateRoute>
+                            <BrowseCourses />
+                        // </PrivateRoute>
                     }
                 />
 

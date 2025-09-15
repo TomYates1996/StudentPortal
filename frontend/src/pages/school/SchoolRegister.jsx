@@ -22,7 +22,6 @@ export default function SchoolRegisterPage() {
     const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
     const handleSubmit = async (e) => {
-        console.log(form);
         e.preventDefault();
         if (submitting) return;
         setSubmitting(true);
@@ -59,48 +58,53 @@ export default function SchoolRegisterPage() {
     };
 
     return (
-        <div>
-        <SectionTabs />
-        <h2>School Registration</h2>
-        {message && <p style={{ color: 'crimson' }}>{message}</p>}
+        <div className='page'>
+            <SectionTabs student={false} />
+            <section className="school-register-wrapper login-wrapper form-wrapper">
+                <h2 className='login-text'>Sign up your school</h2>
+                {message && <p style={{ color: 'crimson' }}>{message}</p>}
 
-        <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                name="schoolName"
-                placeholder="School Name"
-                value={form.schoolName}
-                onChange={handleChange}
-                required
-            /><br />
-            <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={form.email}
-                onChange={handleChange}
-                required
-            /><br />
-            <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={form.password}
-                onChange={handleChange}
-                required
-            /><br />
+                <form className="form login-form" onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        name="schoolName"
+                        className="form-input"
+                        placeholder="School Name"
+                        value={form.schoolName}
+                        onChange={handleChange}
+                        required
+                    /><br />
+                    <input
+                        type="email"
+                        className="form-input"
+                        name="email"
+                        placeholder="Email"
+                        value={form.email}
+                        onChange={handleChange}
+                        required
+                    /><br />
+                    <input
+                        type="password"
+                        name="password"
+                        className="form-input"
+                        placeholder="Password"
+                        value={form.password}
+                        onChange={handleChange}
+                        required
+                    /><br />
 
-            <select name="tier" value={form.tier} onChange={handleChange}>
-                <option value="Starter">Starter</option>
-                <option value="Growth">Growth</option>
-                <option value="Enterprise">Enterprise</option>
-            </select>
-            <br />
+                    <select className='form-select' name="tier" value={form.tier} onChange={handleChange}>
+                        <option value="Starter">Starter</option>
+                        <option value="Growth">Growth</option>
+                        <option value="Enterprise">Enterprise</option>
+                    </select>
+                    <br />
 
-            <button type="submit" disabled={submitting}>
-            {submitting ? 'Processing…' : 'Continue to Payment'}
-            </button>
-        </form>
+                    <button className='base-btn' type="submit" disabled={submitting}>
+                        {submitting ? 'Processing…' : 'Continue to Payment'}
+                    </button>
+                </form>
+            </section>
         </div>
     );
 }
