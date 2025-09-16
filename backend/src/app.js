@@ -7,6 +7,7 @@ const schoolRoutes = require('./routes/schoolRoutes');
 const accessRequestRoutes = require('./routes/accessRequestRoutes');
 const studentRoutes = require("./routes/studentRoutes");
 const classRoutes = require("./routes/classRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(cors({
     credentials: true,
 }));
 
+app.use("/api/payments", paymentRoutes);
 app.use(express.json());
 app.use(morgan('dev'));
 

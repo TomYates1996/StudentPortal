@@ -134,7 +134,7 @@ const BrowseCourses = () => {
                     <button className="close-modal" onClick={ e => setSelectedCourse(null)}>x</button>
                     <div className="title-wrap">
                         <h2 className='title'>{ selectedCourse.title }</h2>
-                        <h3 className="price">£{selectedCourse.price}</h3>
+                        <h3 className="price">£{selectedCourse.price/100}</h3>
                     </div>
                     <div className="description-wrap">
                         <h3 className="description-title">Course Description</h3>

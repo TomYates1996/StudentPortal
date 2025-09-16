@@ -4,8 +4,9 @@ const classSchema = new mongoose.Schema(
     {
         name: { type: String, required: true },
         schoolId: { type: mongoose.Schema.Types.ObjectId, ref: "School", required: true },
-        educatorId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // must have role=educator
+        educatorId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
         studentIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+        courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
     },
     { timestamps: true }
 );

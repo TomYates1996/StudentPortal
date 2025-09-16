@@ -6,7 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 
 const SchoolDashboard = () => {
     const [students, setStudents] = useState([]);
-    const [courses, setCourses] = useState([]);
+    const [ownedCourses, setOwnedCourses] = useState([]);
     const [classes, setClasses] = useState([]);
     const [selectedCourse, setSelectedCourse] = useState('');
     const [selectedSection, setSelectedSection] = useState('educators');
@@ -50,11 +50,11 @@ const SchoolDashboard = () => {
 
                 const classRes = await api.get(`/classes/school/${schoolId}`);
                 setClasses(classRes.data);
+ 
+                const ownedCoursesRes = await api.get(`/school/courses/get/${schoolId}`);
+                setOwnedCourses(ownedCoursesRes.data);
             }
 
-        
-            const courseRes = await api.get('/courses'); 
-            setCourses(courseRes.data.filter(c => c.status === 'active'));
         } catch (err) {
             console.error(err);
         }
@@ -291,10 +291,21 @@ const SchoolDashboard = () => {
                 : selectedSection === "courses" ?
                     <section className="form-wrapper dashboard-section courses-section">
                         <h3>Owned Courses</h3>
-                        <ul>
-                            <li>
-                                <p>Nothing to show</p>
-                            </li>
+                        <ul className="courses-list">
+                            {ownedCourses.map((course) => (
+                                <li key={course._id} className="course-item">
+                                    <div className="image-wrapper">
+                                        <img src={course.imageUrl || '/student-portal-logo.png'} alt={course.title} />
+                                        <p className="course-duration" >{course.courseLength} Hours</p>
+                                    </div>
+                                    <h3>{course.title}</h3>
+                                    {/* <p className='description'>{course.shortDescription}</p> */}
+                                    <div className="button-row">
+                                        {/* <button className="base-btn" onClick={ e => setSelectedCourse(course) }>More info</button> */}
+                                        {/* <button className="base-btn" onClick={ () => {setSelectedCourse(course); initialisePayment(course);} }>Buy now</button> */}
+                                    </div>
+                                </li>
+                            ))}
                         </ul>
                         <Link to="/school/browse-courses" className="base-btn">
                             Browse Courses

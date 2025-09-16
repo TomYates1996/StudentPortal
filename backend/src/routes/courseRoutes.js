@@ -6,4 +6,6 @@ const roleMiddleware = require('../middleware/roleMiddleware');
 
 router.get('/index', courseController.getCourses);
 
+router.get('/:id', courseController.getCourseById);
+
 module.exports = router;

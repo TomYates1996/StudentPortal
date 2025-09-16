@@ -11,6 +11,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import TiersPage from "./pages/school/TiersPage";
 import RegisterSuccess from './pages/school/RegisterSuccess';
 import BrowseCourses from './pages/school/BrowseCourses';
+import PurchaseSuccess from './pages/school/PurchaseSuccess';
 
 function App() {
     const token = localStorage.getItem("token");
@@ -64,6 +65,7 @@ function App() {
                         // </PrivateRoute>
                     }
                 />
+                <Route path="/school/course-purchase-success" element={ <PurchaseSuccess /> } />
 
             </Routes>
         </Router>
