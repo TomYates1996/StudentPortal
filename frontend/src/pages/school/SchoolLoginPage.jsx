@@ -21,6 +21,10 @@ const SchoolLoginPage = () => {
             localStorage.setItem("schoolId", res.data.schoolId);
             localStorage.setItem("email", res.data.email);
             localStorage.setItem("schoolName", res.data.schoolName);
+            localStorage.setItem("userName", res.data.name);
+            
+            console.log(res.data);
+            
 
             navigate("/school/dashboard");
         } catch (err) {

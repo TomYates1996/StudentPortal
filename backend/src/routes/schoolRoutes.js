@@ -174,6 +174,9 @@ router.post('/:schoolId/add-educator', authMiddleware, schoolController.addEduca
 // Get the educators
 router.get('/:schoolId/educators', authMiddleware, schoolController.getEducators);
 
+// Get students
+router.get('/:schoolId/students', authMiddleware, schoolController.getStudents);
+
 router.post(
     '/assign-course',
     async (req, res) => {

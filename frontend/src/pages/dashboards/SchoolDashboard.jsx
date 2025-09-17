@@ -3,6 +3,9 @@ import api from '../../services/api';
 import LogoutButton from '../../components/LogoutButton';
 import { jwtDecode } from "jwt-decode";
 import { Link, useLocation } from "react-router-dom";
+import PortalHeader from '../../components/PortalHeader';
+import OverviewWidget from '../../components/OverviewWidget';
+import ClassListWidget from '../../components/ClassListWidget';
 
 const SchoolDashboard = () => {
     const [students, setStudents] = useState([]);
@@ -21,30 +24,32 @@ const SchoolDashboard = () => {
 
     const token = localStorage.getItem('token');
     const schoolId = localStorage.getItem("schoolId");
-    const email = localStorage.getItem("email");
 
-    useEffect(() => {
-        if (token) {
-            try {
-                const decoded = jwtDecode(token);
-                setUser(decoded);
-            } catch (err) {
-                console.error('Invalid token', err);
-            }
-        }
-    }, [token]);
+    // useEffect(() => {
+    //     if (token) {
+    //         try {
+    //             const decoded = jwtDecode(token);
+    //             setUser(decoded);
+    //             localStorage.setItem('userName', decoded.name);
+    //             localStorage.setItem('userEmail', decoded.email);
+    //             localStorage.setItem('userRole', decoded);
+    //         } catch (err) {
+    //             console.error('Invalid token', err);
+    //         }
+    //     }
+    // }, [token]);
 
     const fetchData = async () => {
         try {
             if (schoolId) {
-                // const studentRes = await api.get(`/schools/${schoolId}/students`);
-                // setStudents(studentRes.data);
+                const studentRes = await api.get(`/student/school/${schoolId}`);
+                setStudents(studentRes.data);
 
                 const schoolRes = await api.get(`/school/${schoolId}`);
                 setSchool(schoolRes.data);
                 
                 const educatorRes = await api.get(`/school/${schoolId}/educators`, {
-                    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+                    headers: { Authorization: `Bearer ${token}` }
                 });
                 setEducators(educatorRes.data);
 
@@ -53,6 +58,8 @@ const SchoolDashboard = () => {
  
                 const ownedCoursesRes = await api.get(`/school/courses/get/${schoolId}`);
                 setOwnedCourses(ownedCoursesRes.data);
+
+                localStorage.setItem('schoolName', schoolRes.data.name);
             }
 
         } catch (err) {
@@ -88,7 +95,7 @@ const SchoolDashboard = () => {
         e.preventDefault();
         try {
             const res = await api.post(`/school/${schoolId}/add-educator`, newEducator, {
-                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+                headers: { Authorization: `Bearer ${token}` }
             });
             setMessage(res.data.message);
             setNewEducator({ name: '', email: '', password: '' });
@@ -106,7 +113,7 @@ const SchoolDashboard = () => {
             "/student/create",
             { ...newStudent, schoolId },
             {
-                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+                headers: { Authorization: `Bearer ${token}` },
             }
             );
             setMessage(res.data.message);
@@ -131,25 +138,27 @@ const SchoolDashboard = () => {
 
     return (
         <div className="page dashboard school-dashboard">
-            <div className="dashboard-top-bar">
-                <LogoutButton />
-                {user && school && (
-                    <p>
-                        Logged in as <strong>{user.name}{user.email}{user.role}</strong> ({school.name})
-                    </p>
-                )}
-            </div>
-
-            {/* <h2>School Admin Dashboard</h2> */}
+            <PortalHeader />
 
             {message && <p>{message}</p>}
+
+            <section className="dashboard-details-top">
+                <OverviewWidget schoolId={schoolId} />
+                <div className="dashboard-buttons">
+                    <Link to="/school/browse-courses" className="base-btn light-blue-btn">Browse Courses</Link>
+                    <Link to="/school/add-student" className="base-btn light-green-btn">Add Students</Link>
+                </div>
+            </section>
+
+            <ClassListWidget schoolId={schoolId} />
 
             <div className="section-section">
                 <div className="tabs section-tabs">
                     <button onClick={e => setSelectedSection('educators')} className={`base-btn tab-btn ${selectedSection === 'educators' ? 'active' : ''}`} >Teachers</button>
                     <button onClick={e => setSelectedSection('students')} className={`base-btn tab-btn ${selectedSection === 'students' ? 'active' : ''}`} >Students</button>
                     <button onClick={e => setSelectedSection('classes')} className={`base-btn tab-btn ${selectedSection === 'classes' ? 'active' : ''}`} >Classes</button>
-                    <button onClick={e => setSelectedSection('courses')} className={`base-btn tab-btn ${selectedSection === 'courses' ? 'active' : ''}`} >Courses</button>
+                    <button onClick={e => setSelectedSection('courses')} className={`base-btn tab-btn ${selectedSection === 'courses' ? 'active' : ''}`} >Manage Courses</button>
+                    <Link to="/school/browse-courses" className="base-btn">Add Courses</Link>
                 </div>
 
                 {selectedSection === 'educators' ? 
@@ -307,9 +316,6 @@ const SchoolDashboard = () => {
                                 </li>
                             ))}
                         </ul>
-                        <Link to="/school/browse-courses" className="base-btn">
-                            Browse Courses
-                        </Link>
                     </section>
                 : <h2>Welcome</h2> 
                 

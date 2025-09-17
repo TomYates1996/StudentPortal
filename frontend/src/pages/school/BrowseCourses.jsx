@@ -64,9 +64,6 @@ const BrowseCourses = () => {
     const fetchData = async () => {
         try {
             if (schoolId) {
-                // const studentRes = await api.get(`/schools/${schoolId}/students`);
-                // setStudents(studentRes.data);
-
                 const coursesRes = await api.get(`/courses/index`);
                 setCourses(coursesRes.data);
 
@@ -108,6 +105,8 @@ const BrowseCourses = () => {
             <div className="section-section">
                 Courses Page
             </div>
+
+            <Link to="/school/dashboard" className="base-btn">Dashboard</Link>
 
             <section className="courses-wrapper">
                 <ul className="courses-list">

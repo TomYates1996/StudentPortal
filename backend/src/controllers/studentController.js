@@ -10,42 +10,70 @@ exports.createStudent = async (req, res) => {
         const requester = req.user; 
 
         if (!["schoolAdmin", "educator"].includes(requester.role)) {
-        return res.status(403).json({ message: "Not authorized" });
+            return res.status(403).json({ message: "Not authorized" });
         }
 
         const existing = await User.findOne({ email });
         if (existing) {
-        return res.status(400).json({ message: "Email already registered" });
+            return res.status(400).json({ message: "Email already registered" });
+        }
+
+        const school = await School.findById(schoolId);
+        if (!school) {
+            return res.status(404).json({ message: "School not found" });
+        }
+
+        const studentCount = await User.countDocuments({ schoolId, role: "student" });
+
+        let limit;
+        switch (school.tier) {
+            case "Starter":
+                limit = 20;
+                break;
+            case "Growth":
+                limit = 100;
+                break;
+            case "Enterprise":
+                limit = 1000;
+                break;
+            default:
+                limit = 0;
+        }
+
+        if (studentCount >= limit) {
+            return res.status(403).json({ 
+                message: `Student limit reached for ${school.tier} tier. Max allowed: ${limit}` 
+            });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newStudent = new User({
-        name,
-        email,
-        passwordHash: hashedPassword,
-        role: "student",
-        schoolId,
+            name,
+            email,
+            passwordHash: hashedPassword,
+            role: "student",
+            schoolId,
         });
 
         await newStudent.save();
 
         if (classId) {
-        const classObj = await Class.findById(classId);
-        if (classObj) {
-            classObj.studentIds.push(newStudent._id);
-            await classObj.save();
-        }
+            const classObj = await Class.findById(classId);
+            if (classObj) {
+                classObj.studentIds.push(newStudent._id);
+                await classObj.save();
+            }
         }
 
         res.status(201).json({
-        message: "Student created successfully",
-        student: {
-            id: newStudent._id,
-            name: newStudent.name,
-            email: newStudent.email,
-            role: newStudent.role,
-        },
+            message: "Student created successfully",
+            student: {
+                id: newStudent._id,
+                name: newStudent.name,
+                email: newStudent.email,
+                role: newStudent.role,
+            },
         });
     } catch (err) {
         console.error("Create student error:", err);

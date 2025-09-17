@@ -103,3 +103,21 @@ exports.getEducators = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
+
+// Get the educators for a school
+exports.getStudents = async (req, res) => {
+    const { schoolId } = req.params;
+    const requester = req.user;
+
+    try {
+        if (requester.role !== 'schoolAdmin' || requester.role !== 'educator' || requester.schoolId !== schoolId) {
+            return res.status(403).json({ message: "Not authorized" });
+        }
+
+        const students = await User.find({ schoolId, role: 'student' }).select('-passwordHash');
+        res.json(students);
+    } catch (err) {
+        console.error("Get student error:", err);
+        res.status(500).json({ message: "Server error" });
+    }
+};
