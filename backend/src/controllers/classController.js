@@ -20,26 +20,68 @@ exports.createClass = async (req, res) => {
     }
 };
 
-// Add student to a class
-exports.addStudentToClass = async (req, res) => {
+// Add students to a class
+exports.addStudentsToClass = async (req, res) => {
     try {
-        const { classId, studentId } = req.body;
+        const { classId } = req.params; 
+        const { studentIds } = req.body; 
 
         const classObj = await Class.findById(classId);
         if (!classObj) return res.status(404).json({ message: "Class not found" });
 
-        // Make sure the student belongs to the same school
-        const student = await User.findOne({ _id: studentId, schoolId: classObj.schoolId, role: "student" });
-        if (!student) return res.status(400).json({ message: "Invalid student" });
+        const validStudents = await User.find({
+            _id: { $in: studentIds },
+            schoolId: classObj.schoolId,
+            role: "student",
+        });
 
-        if (!classObj.studentIds.includes(studentId)) {
-        classObj.studentIds.push(studentId);
-        await classObj.save();
+        if (validStudents.length === 0) {
+            return res.status(400).json({ message: "No valid students found" });
         }
 
-        res.json(classObj);
+        const newIds = validStudents
+            .map(s => s._id.toString())
+            .filter(id => !classObj.studentIds.map(String).includes(id));
+
+        classObj.studentIds.push(...newIds);
+        await classObj.save();
+
+        const updatedClass = await classObj.populate("studentIds", "name email").populate("courses", "title").populate("educatorId", "name email");
+
+        res.json(updatedClass);
     } catch (err) {
-        console.error("Error adding student:", err);
+        console.error("Error adding students:", err);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+// Remove student from a class
+exports.removeStudentFromClass = async (req, res) => {
+    try {
+        const { classId } = req.params;
+        const { studentId } = req.body;
+
+        const classObj = await Class.findById(classId);
+        if (!classObj) {
+            return res.status(404).json({ message: "Class not found" });
+        }
+
+        if (!classObj.studentIds.includes(studentId)) {
+            return res.status(400).json({ message: "Student not in class" });
+        }
+
+        classObj.studentIds = classObj.studentIds.filter(
+            (id) => id.toString() !== studentId
+        );
+        await classObj.save();
+
+        const updatedClass = await Class.findById(classId)
+        .populate("studentIds", "name email")
+        .populate("courses", "title");
+
+        res.json(updatedClass);
+    } catch (err) {
+        console.error("Error removing student:", err);
         res.status(500).json({ message: "Server error" });
     }
 };
@@ -50,7 +92,9 @@ exports.getClassesBySchool = async (req, res) => {
         const { schoolId } = req.params;
         const classes = await Class.find({ schoolId })
         .populate("educatorId", "name email")
-        .populate("studentIds", "name email");
+        .populate("studentIds", "name email")
+        .populate("courses", "title");
+
         res.json(classes);
     } catch (err) {
         console.error("Error fetching classes:", err);

@@ -150,7 +150,7 @@ const SchoolDashboard = () => {
                 </div>
             </section>
 
-            <ClassListWidget schoolId={schoolId} />
+            <ClassListWidget fetchData={fetchData} educators={educators} schoolId={schoolId} />
 
             <div className="section-section">
                 <div className="tabs section-tabs">
