@@ -121,8 +121,10 @@ ul {
         @media (hover : hover) {
             &:hover {
                 border-color: var(--primary);
+                color: inherit;
                 &:not(.active) {
-                    background-color: var(--button-colour-hover);
+                    background-color: var(--deep-purple);
+                    color: var(--white);
                 }
             }
         }
@@ -200,6 +202,11 @@ h2 {
             .form-link {
                 color: var(--orange);
                 text-decoration: none;
+                @media (hover:hover) {
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
             }
         }
     }
@@ -216,6 +223,9 @@ h2 {
         background-color: var(--off-white);
         position: relative;
         padding: 40px 0px 100px 0px;
+        background-image: url(../public/design-images/random-dots.png);
+        background-size: 500px;
+        background-repeat: repeat;
         .login-page-pattern {
             position: absolute;
             height: 100px;
@@ -249,6 +259,24 @@ h2 {
         }
         .form-wrapper {
             z-index: 10;
+            .form {
+                .form-input {
+                    &.email-input {
+                        background-image: url(../public/design-images/envelope-icon.png);
+                        background-size: 30px;
+                        background-repeat: no-repeat;
+                        background-position: center left 10px;
+                        padding-left: 50px;
+                    }
+                    &.password-input {
+                        padding-left: 50px;
+                        background-image: url(../public/design-images/padlock-icon.png);
+                        background-size: 30px;
+                        background-repeat: no-repeat;
+                        background-position: center left 10px;
+                    }
+                }
+            }
         }
     }
 }

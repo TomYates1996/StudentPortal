@@ -33,9 +33,10 @@ const SchoolLoginPage = () => {
 
     return (
         <main className="page login-page">
-            <img src="/design-images/yellow-wave-top-left.png" alt="yellow wave" className="top-left-img" />
+            <img src="/design-images/yellow-wave-top-left.png" alt="yellow wave" className="top-left-wave login-page-pattern" />
+            <img src="/design-images/book.png" alt="" className="top-right-image login-page-pattern" />
             <SectionTabs student={false} />
-            <h1 className="student-portal-title">Student Course Portal</h1>
+            <h1 className="student-portal-title">Course Portal</h1>
             <section className="school-login-wrapper login-wrapper form-wrapper">
                 <h2 className="login-text">School Login</h2>
                 {error && <p className="login-failed">{error}</p>}
@@ -45,7 +46,7 @@ const SchoolLoginPage = () => {
                         placeholder="Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="form-input"
+                        className="form-input email-input"
                         required
                     />
                     <input
@@ -53,7 +54,7 @@ const SchoolLoginPage = () => {
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="form-input"
+                        className="form-input password-input"
                         required
                     />
                     <button
@@ -70,6 +71,8 @@ const SchoolLoginPage = () => {
                     </Link>
                 </p>
             </section>
+            <img src="/design-images/yellow-wave-bottom-left.png" alt="" className="bottom-left-wave login-page-pattern" />
+            <img src="/design-images/purple-wave-bottom-right.png" alt="" className="bottom-right-wave login-page-pattern" />
         </main>
     );
 };
