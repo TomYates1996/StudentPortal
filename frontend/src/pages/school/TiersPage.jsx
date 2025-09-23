@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import SectionTabs from "../../components/SectionTabs";
 
 const tiers = [
     { name: "Starter", teachers: 3 , students: 20, classes: 5, priceMonth: 50, priceYear: 499, features: ["Buy Courses", "Assign Classes"] },
@@ -10,25 +11,26 @@ const tiers = [
 const TiersPage = () => {
     return (
         <div className="page tiers-page">
+            <SectionTabs student={false}/>
             <h1 className="big-header">Price Plans</h1>
             <div className="tiers-inner">
                 {tiers.map((tier) => (
                     <div key={tier.name} className="tier-item">
                         <h2 className="tier-title">{tier.name}</h2>
                         <p className="tier-price">
-                            <span className="">*£{tier.priceMonth} per month</span>
+                            <span className="">£{tier.priceMonth} per month</span>
                             {/* <span className="">£{tier.priceYear}/year</span> */}
                         </p>
                         <div className="tier-features-wrapper">
                             <p>Teachers: {tier.teachers}</p>
                             <p>Students: {tier.students}</p>
                             <p>Classes: {tier.classes}</p>
-                            <h4>Features</h4>
-                            <ul className="tier-features">
+                            {/* <h4>Features</h4> */}
+                            {/* <ul className="tier-features">
                                 {tier.features.map((feature, idx) => (
                                     <li key={idx}>{feature}</li>
                                 ))}
-                            </ul>
+                            </ul> */}
                         </div>
                         <Link
                             to={`/school/register?tier=${tier.name}`}
@@ -39,7 +41,7 @@ const TiersPage = () => {
                     </div>
                 ))}
             </div>
-            <p>*Payment will be taken automatically on the last day of every month, cancel at any time.</p>
+            <p className="footer-text">*Payment will be taken automatically on the last day of every month, cancel at any time.</p>
         </div>
     );
 };

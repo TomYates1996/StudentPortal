@@ -58,7 +58,7 @@ export default function SchoolRegisterPage() {
     };
 
     return (
-        <div className='page'>
+        <div className='page school-register'>
             <SectionTabs student={false} />
             <section className="school-register-wrapper login-wrapper form-wrapper">
                 <h2 className='login-text'>Sign up your school</h2>
@@ -68,39 +68,37 @@ export default function SchoolRegisterPage() {
                     <input
                         type="text"
                         name="schoolName"
-                        className="form-input"
+                        className="form-input name-input"
                         placeholder="School Name"
                         value={form.schoolName}
                         onChange={handleChange}
                         required
-                    /><br />
+                    />
                     <input
                         type="email"
-                        className="form-input"
+                        className="form-input email-input"
                         name="email"
                         placeholder="Email"
                         value={form.email}
                         onChange={handleChange}
                         required
-                    /><br />
+                    />
                     <input
                         type="password"
                         name="password"
-                        className="form-input"
+                        className="form-input password-input"
                         placeholder="Password"
                         value={form.password}
                         onChange={handleChange}
                         required
-                    /><br />
+                    />
 
-                    <select className='form-select' name="tier" value={form.tier} onChange={handleChange}>
-                        <option value="Starter">Starter</option>
-                        <option value="Growth">Growth</option>
-                        <option value="Enterprise">Enterprise</option>
+                    <select className='form-select tier-select' name="tier" value={form.tier} onChange={handleChange}>
+                        <option className='tier-option form-option' value="Starter">Starter</option>
+                        <option className='tier-option form-option' value="Growth">Growth</option>
+                        <option className='tier-option form-option' value="Enterprise">Enterprise</option>
                     </select>
-                    <br />
-
-                    <button className='base-btn' type="submit" disabled={submitting}>
+                    <button className='base-btn form-submit' type="submit" disabled={submitting}>
                         {submitting ? 'Processing…' : 'Continue to Payment'}
                     </button>
                 </form>

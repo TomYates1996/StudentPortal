@@ -25,7 +25,6 @@ const StudentRequestAccess = () => {
 
     return (
         <div className="page student-access-request">
-            <img src="../../../public/student-portal-logo.png" alt="" />
             <SectionTabs />
             <div className="form-wrapper">
                 <h2 className="">Request Access</h2>

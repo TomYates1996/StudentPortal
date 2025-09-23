@@ -5,10 +5,10 @@ const SectionTabs = ({ student = true }) => {
 
     return (
         <div className="tabs">
-            <Link to="/student/login" className={`tab-btn base-btn ${ student || location.pathname.includes("/student") ? "active" : ""}`}>
+            <Link to="/student/login" className={`tab-btn ${ student || location.pathname.includes("/student") ? "active" : ""}`}>
                 Student
             </Link>
-            <Link to="/school/login" className={`tab-btn base-btn ${ !student || location.pathname.includes("/school") ? "active" : "" }`}>
+            <Link to="/school/login" className={`tab-btn ${ !student || location.pathname.includes("/school") ? "active" : "" }`}>
                 School/Teacher
             </Link>
         </div>

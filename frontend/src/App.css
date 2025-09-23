@@ -20,6 +20,8 @@
     --black: #000000;       /* Black */
     --off-white: #fffee1;   /* Off White  */
     --light-green: #A8D5BA; /* Light Green */
+    --dark-green: #187c68; /* Dark Green */
+    --blue-green: #0aa89b; /* Blue Green */
     --light-blue: #d5e3fe;  /* Light Blue */
     --dark-blue: #5168f4;
     --orange: #ea8528;     /* Yellow  */
@@ -69,15 +71,16 @@ ul {
 
 /* Button styles */
 .base-btn {
-    background-color: var(--button-colour);
-    border: 2px solid var(--button-border);
-    padding: 6px 10px;
-    color: var(--button-text);
-    border-radius: 5px;
+    padding: 4px 12px;
+    font-size: 1.2rem;
+    width: 100%;
+    border: 2px solid var(--dark-blue);
+    border-radius: 16px;
+    color: var(--white);
+    background-color: var(--dark-blue);
+    font-weight: 600;
+    cursor: pointer;
     text-decoration: none;
-    font-weight: 700;
-    font-size: 1rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     @media (hover: hover) {
         &:hover {
             background-color: var(--button-colour-hover);
@@ -115,6 +118,7 @@ ul {
         color: var(--deep-purple);
         font-weight: 600;
         background-color: var(--light-purple);
+        text-decoration: none;
         &.active {
             background-color: var(--pink);
         }
@@ -177,6 +181,7 @@ h2 {
                 font-weight: 500;
                 border: 2px solid var(--deep-purple);
                 color: var(--deep-purple);
+                width: 100%;
                 &::placeholder {
                     color: var(--deep-purple);
                 }
@@ -191,6 +196,7 @@ h2 {
                 background-color: var(--dark-blue);
                 font-weight: 600;
                 cursor: pointer;
+                line-height: 1.6;
             }
         }
         .form-link-wrap {
@@ -219,10 +225,16 @@ h2 {
         }
     }
     flex: 1;
+    &.student-access-request,
+    &.tiers-page,
+    &.school-register,
+    &.dashboard,
     &.login-page {
         background-color: var(--off-white);
         position: relative;
-        padding: 40px 0px 100px 0px;
+        &:not(.dashboard) {
+            padding: 40px 0px 100px 0px;
+        }
         background-image: url(../public/design-images/random-dots.png);
         background-size: 500px;
         background-repeat: repeat;
@@ -267,10 +279,39 @@ h2 {
                         background-repeat: no-repeat;
                         background-position: center left 10px;
                         padding-left: 50px;
+                        &:-webkit-autofill {
+                            padding-left: 20px;
+                        }
                     }
                     &.password-input {
                         padding-left: 50px;
                         background-image: url(../public/design-images/padlock-icon.png);
+                        background-size: 30px;
+                        background-repeat: no-repeat;
+                        background-position: center left 10px;
+                        &:-webkit-autofill {
+                            padding-left: 20px;
+                        }
+                    }
+                    &.name-input {
+                        padding-left: 50px;
+                        background-image: url(../public/design-images/text-aa.png);
+                        background-size: 30px;
+                        background-repeat: no-repeat;
+                        background-position: center left 10px;
+                        &:-webkit-autofill {
+                            padding-left: 20px;
+                        }
+                    }
+                }
+                .form-select {
+                    .form-option {
+                        border-radius: 16px;
+                        padding: 20px;
+                    }
+                    &.tier-select {
+                        padding-left: 50px;
+                        background-image: url(../public/design-images/tiers-icon.png);
                         background-size: 30px;
                         background-repeat: no-repeat;
                         background-position: center left 10px;
@@ -279,9 +320,14 @@ h2 {
             }
         }
     }
+    &.student-access-request {
+        padding: 40px 20px 100px 20px;
+        justify-content: flex-start;
+    }
 }
 /* Dashboard */
 .dashboard {
+    justify-content: flex-start;
     gap: 20px;
     .dashboard-top-bar {
         display: flex;
@@ -318,13 +364,13 @@ h2 {
             grid-template-columns: repeat(2, 1fr);
             gap: 10px;
         }
-        .dashboard-section {
-            background-color: var(--tertiary-deep);
-            padding: 20px;
-            border-radius: 5px;
-            width: 100%;
-            border: 1px solid var(--accent);
-        }
+    }
+    .dashboard-section {
+        /* background-color: var(--tertiary-deep); */
+        padding: 0px 20px;
+        border-radius: 5px;
+        width: 100%;
+        /* border: 1px solid var(--accent); */
     }
 }
 
@@ -332,6 +378,7 @@ h2 {
 .tiers-page {
     gap: 20px;
     padding: 20px;
+    color: var(--deep-purple);
     .tiers-inner {
         display: flex;
         flex-wrap: wrap;
@@ -339,16 +386,22 @@ h2 {
         justify-content: center;
         gap: 30px;
         .tier-item {
-            box-shadow: 2px 2px 6px 2px var(--accent);
             min-width: 240px;
-            border-radius: 10px;
+            border-radius: 16px;
+            border: 2px solid var(--deep-purple);
             padding: 20px;
-            gap: 10px;
+            gap: 4px;
             display: flex;
             flex-direction: column;
+            background-color: var(--light-blue);
+            color: var(--deep-purple);
+            .tier-title {
+                line-height: 1.2;
+            }
             .tier-price {
                 font-size: 18px;
-                font-weight: 300;
+                font-weight: 600;
+                color: var(--orange);
             }
             .tier-features-wrapper {
                 font-weight: 600;
@@ -362,10 +415,13 @@ h2 {
                 }
             }
             .tier-btn {
-                width: fit-content;
-                margin-top: auto;
+                margin-top: 20px;
             }
         }
+    }
+    .footer-text {
+        padding: 20px;
+        font-size: .875rem;
     }
 }
 
@@ -673,14 +729,74 @@ h2 {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    padding: 20px 0px;
+    align-items: center;
+    @media screen and (min-width: 40em) {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: flex-start;
+    }
+    @media screen and (min-width: 64em) {
+        grid-template-columns: repeat(3, 1fr);
+    }
     .class-card {
+        --card-colour: var(--deep-purple);
+        --card-colour-2: var(--light-purple);
+        --card-colour-text: var(--deep-purple);
+        &:nth-of-type(2) {
+            --card-colour: var(--dark-green);
+            --card-colour-2: var(--blue-green);
+            --card-colour-text: var(--white);
+        }
         background-color: var(--white);
+        max-width: 500px;
         border-radius: 14px;
-        border: 1px solid var(--light-blue);
+        border: 2px solid var(--card-colour-2);
         padding: 0px 0px 20px;
         overflow: hidden;
+        width: 100%;
         .class-name {
-            background-color: var(--light-blue);
+            background-color: var(--card-colour-2);
+            color: var(--card-colour-text);
+            padding: 10px 20px;
+        }
+        .classmates-title {
+            padding: 5px 20px;
+        }
+        .class-students-list {
+            padding: 0px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            .class-students-item {
+                .student-icon {
+                    width: 40px;
+                    display: flex;
+                    aspect-ratio: 1;
+                    overflow: hidden;
+                    border-radius: 100%;
+                    height: 40px;
+                    font-size: 12px;
+                    background-color: var(--card-colour);
+                }
+            }
+        }
+        .class-courses {
+            padding: 5px 20px;    
+        }
+        .class-courses-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 0px 20px;
+            .class-courses-item {
+                background-color: var(--card-colour);
+                border-radius: 8px;
+                padding: 3px 12px;
+                font-size: .875rem;
+                color: var(--white);
+                font-weight: 600;
+            }
         }
     }
 }
