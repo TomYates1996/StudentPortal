@@ -46,9 +46,11 @@ exports.addStudentsToClass = async (req, res) => {
         classObj.studentIds.push(...newIds);
         await classObj.save();
 
-        const updatedClass = await classObj.populate("studentIds", "name email").populate("courses", "title").populate("educatorId", "name email");
+        await classObj.populate("studentIds", "name email");
+        await classObj.populate("courses", "title");
+        await classObj.populate("educatorId", "name email");
 
-        res.json(updatedClass);
+        res.json(classObj);
     } catch (err) {
         console.error("Error adding students:", err);
         res.status(500).json({ message: "Server error" });
@@ -98,6 +100,23 @@ exports.getClassesBySchool = async (req, res) => {
         res.json(classes);
     } catch (err) {
         console.error("Error fetching classes:", err);
+        res.status(500).json({ message: "Server error" });
+    }
+};
+
+// Get classes for a student
+exports.getClassesForStudent = async (req, res) => {
+    try {
+        const { studentId } = req.params;
+
+        const classes = await Class.find({ studentIds: studentId })
+            .populate("educatorId", "name email")
+            .populate("courses", "title description")
+            .populate("studentIds", "name email");
+
+        res.json(classes);
+    } catch (err) {
+        console.error("Error fetching student classes:", err);
         res.status(500).json({ message: "Server error" });
     }
 };

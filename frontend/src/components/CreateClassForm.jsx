@@ -28,7 +28,7 @@ const CreateClassForm = ({ schoolId, educators, fetchData, onClose }) => {
     };
 
     return (
-        <div className="create-class-form form-wrapper">
+        <div className="create-class-form list-form-wrapper form-wrapper">
             {message && <p>{message}</p>}
             <form className='form' onSubmit={handleCreateClass}>
                 <input

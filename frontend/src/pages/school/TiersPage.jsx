@@ -2,9 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const tiers = [
-    { name: "Starter", teachers: 3 , students: 20, priceMonth: 50, priceYear: 499, features: ["Buy Courses", "Assign Classes"] },
-    { name: "Growth", teachers : 10, students: 100, priceMonth: 150, priceYear: 1999, features: ["All Starter features", "Priority support"] },
-    { name: "Enterprise", teachers : 50, students: 1000, priceMonth: 500, priceYear: 7999, features: ["All Growth features", "Dedicated account manager", "Access to free courses"] }
+    { name: "Starter", teachers: 3 , students: 20, classes: 5, priceMonth: 50, priceYear: 499, features: ["Buy Courses", "Assign Classes"] },
+    { name: "Growth", teachers : 10, students: 100, classes: 10, priceMonth: 150, priceYear: 1999, features: ["All Starter features", "Priority support"] },
+    { name: "Enterprise", teachers : 50, students: 1000, classes: 100, priceMonth: 500, priceYear: 7999, features: ["All Growth features", "Dedicated account manager", "Access to free courses"] }
 ];
 
 const TiersPage = () => {
@@ -22,6 +22,7 @@ const TiersPage = () => {
                         <div className="tier-features-wrapper">
                             <p>Teachers: {tier.teachers}</p>
                             <p>Students: {tier.students}</p>
+                            <p>Classes: {tier.classes}</p>
                             <h4>Features</h4>
                             <ul className="tier-features">
                                 {tier.features.map((feature, idx) => (

@@ -2,6 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const School = require("../models/School");
+const Class = require("../models/Class");
 
 exports.loginSchool = async (req, res) => {
     const { email, password } = req.body;
@@ -59,7 +60,23 @@ exports.loginStudent = async (req, res) => {
             { expiresIn: "7d" }
         );
 
-        res.json({ token, role: user.role, schoolId: user.schoolId });
+        const school = await School.findById(user.schoolId);
+
+        const classes = await Class.find({ studentIds: user._id })
+            .populate("educatorId", "name email")
+            .populate("courses", "title courseLength imageUrl shortDescription")
+            .populate("studentIds", "name email");
+
+        res.json({ 
+            token, 
+            role: user.role, 
+            id: user._id,
+            name: user.name,
+            schoolId: user.schoolId,
+            email: user.email,
+            schoolName: school ? school.name : "Unknown School",
+            classes,  
+        });
     } catch (err) {
         console.error("Student login error:", err);
         res.status(500).json({ message: "Server error" });

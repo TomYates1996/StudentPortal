@@ -3,6 +3,7 @@ import api from '../../services/api';
 import LogoutButton from '../../components/LogoutButton';
 import { jwtDecode } from "jwt-decode";
 import { Link, useLocation } from "react-router-dom";
+import PortalHeader from '../../components/PortalHeader';
 
 // const courses = [
 //     { id : 1, title: "Course 1", shortDescription : 'this is the description for course 1', description : 'this is the full description for course 1this is the full description for course 1this is the full description for course 1', courseLength : 30, price : 400, imageUrl : '/student-portal-logo.png', modules : ['Section 1' , 'Learning 2', 'Learning 3', 'How to 4', 'When You Learn', 'Finishing up'] },
@@ -90,14 +91,8 @@ const BrowseCourses = () => {
 
     return (
         <div className="page browse-courses">
-            <div className="dashboard-top-bar">
-                <LogoutButton />
-                {user && school && (
-                    <p>
-                        Logged in as <strong>{user.name}{user.email}{user.role}</strong> ({school.name})
-                    </p>
-                )}
-            </div>
+            <PortalHeader />
+            
 
 
             {message && <p>{message}</p>}

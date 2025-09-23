@@ -6,6 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 import PortalHeader from '../../components/PortalHeader';
 import OverviewWidget from '../../components/OverviewWidget';
 import ClassListWidget from '../../components/ClassListWidget';
+import StudentListWidget from '../../components/StudentListWidget';
 
 const SchoolDashboard = () => {
     const [students, setStudents] = useState([]);
@@ -145,20 +146,22 @@ const SchoolDashboard = () => {
             <section className="dashboard-details-top">
                 <OverviewWidget schoolId={schoolId} />
                 <div className="dashboard-buttons">
-                    <Link to="/school/browse-courses" className="base-btn light-blue-btn">Browse Courses</Link>
-                    <Link to="/school/add-student" className="base-btn light-green-btn">Add Students</Link>
+                    <Link to="/school/browse-courses" className="base-btn light-blue-btn">Buy Courses</Link>
+                    <button className="base-btn light-green-btn" onClick={() => { document.getElementById("studentList")?.scrollIntoView({ behavior: "smooth" });}}>
+                        Add Students
+                    </button>
+                    
                 </div>
             </section>
 
-            <ClassListWidget fetchData={fetchData} educators={educators} schoolId={schoolId} />
+            <ClassListWidget fetchData={fetchData} educators={educators} schoolId={schoolId} students={students} />
+            <StudentListWidget schoolId={schoolId} students={students} onStudentCreated={(student) => setStudents((prev) => [...prev, student])} />
 
             <div className="section-section">
                 <div className="tabs section-tabs">
                     <button onClick={e => setSelectedSection('educators')} className={`base-btn tab-btn ${selectedSection === 'educators' ? 'active' : ''}`} >Teachers</button>
-                    <button onClick={e => setSelectedSection('students')} className={`base-btn tab-btn ${selectedSection === 'students' ? 'active' : ''}`} >Students</button>
-                    <button onClick={e => setSelectedSection('classes')} className={`base-btn tab-btn ${selectedSection === 'classes' ? 'active' : ''}`} >Classes</button>
-                    <button onClick={e => setSelectedSection('courses')} className={`base-btn tab-btn ${selectedSection === 'courses' ? 'active' : ''}`} >Manage Courses</button>
-                    <Link to="/school/browse-courses" className="base-btn">Add Courses</Link>
+                    {/* <button onClick={e => setSelectedSection('students')} className={`base-btn tab-btn ${selectedSection === 'students' ? 'active' : ''}`} >Students</button> */}
+                    {/* <button onClick={e => setSelectedSection('courses')} className={`base-btn tab-btn ${selectedSection === 'courses' ? 'active' : ''}`} >Manage Courses</button> */}
                 </div>
 
                 {selectedSection === 'educators' ? 
@@ -200,58 +203,6 @@ const SchoolDashboard = () => {
                                 required
                             />
                             <button className='base-btn' type="submit">Add Educator</button>
-                        </form>
-                    </section> 
-                : selectedSection === 'students' ? 
-                    <section className="form-wrapper dashboard-section student-section">
-                        <h3>Students</h3>
-                        <ul>
-                            {students.length < 1 ?
-                            'No students created' :
-                            students.map(student => (
-                                <li key={student._id}>{student.name} ({student.email})</li>
-                            ))}
-                        </ul>
-
-                        <h3>Add Student</h3>
-                        <form className='form' onSubmit={handleAddStudent}>
-                            <input
-                                className='form-input'
-                                type="text"
-                                placeholder="Name"
-                                value={newStudent.name}
-                                onChange={(e) => setNewStudent({ ...newStudent, name: e.target.value })}
-                                required
-                            />
-                            <input
-                            className='form-input'
-                                type="email"
-                                placeholder="Email"
-                                value={newStudent.email}
-                                onChange={(e) => setNewStudent({ ...newStudent, email: e.target.value })}
-                                required
-                            />
-                            <input
-                                className='form-input'
-                                type="password"
-                                placeholder="Password"
-                                value={newStudent.password}
-                                onChange={(e) => setNewStudent({ ...newStudent, password: e.target.value })}
-                                required
-                            />
-                            <select
-                                className='form-select'
-                                value={newStudent.classId}
-                                onChange={(e) => setNewStudent({ ...newStudent, classId: e.target.value })}
-                            >
-                                <option value="">Assign to Class (optional)</option>
-                                {classes.map((c) => (
-                                <option key={c._id} value={c._id}>
-                                    {c.name}
-                                </option>
-                                ))}
-                            </select>
-                            <button className='base-btn' type="submit">Add Student</button>
                         </form>
                     </section> 
                 : selectedSection === 'classes' ?

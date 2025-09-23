@@ -1,31 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import api from '../../services/api';
-import LogoutButton from '../../components/LogoutButton';
+import React, { useEffect, useState } from "react";
+import PortalHeader from "../../components/PortalHeader";
+import ClassItem from "../../components/ClassItem";
 
 const StudentDashboard = () => {
-    const [courses, setCourses] = useState([]);
+    const [classes, setClasses] = useState([]);
 
     useEffect(() => {
-        const fetchCourses = async () => {
-            const res = await api.get('/courses/my');
-            setCourses(res.data);
-        };
-        fetchCourses();
+        const storedClasses = localStorage.getItem("studentClasses");
+        if (storedClasses) {
+            setClasses(JSON.parse(storedClasses));
+        }
     }, []);
 
     return (
-        <div>
-            <LogoutButton />
-            <h2>My Courses</h2>
-            {courses.length === 0 ? (
-                <p>No courses enrolled yet.</p>
-            ) : (
-                <ul>
-                    {courses.map(course => (
-                        <li key={course._id}>{course.title}</li>
-                    ))}
+        <div className="page dashboard student-dashboard">
+            <PortalHeader />
+
+            <section className="dashboard-section">
+                <h2>Your Classes</h2>
+                <ul className="classes-list-container">
+                    {classes.length > 0 ? (
+                        classes.map(cls => (
+                            <ClassItem key={cls._id} passedClass={cls}/>
+                        ))
+                    ) : (
+                        <p>You are not assigned to any classes yet.</p>
+                    )}
                 </ul>
-            )}
+            </section>
         </div>
     );
 };

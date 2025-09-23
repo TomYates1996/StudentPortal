@@ -23,8 +23,6 @@ const SchoolLoginPage = () => {
             localStorage.setItem("schoolName", res.data.schoolName);
             localStorage.setItem("userName", res.data.name);
             
-            console.log(res.data);
-            
 
             navigate("/school/dashboard");
         } catch (err) {
@@ -34,8 +32,10 @@ const SchoolLoginPage = () => {
     };
 
     return (
-        <main className="page">
+        <main className="page login-page">
+            <img src="/design-images/yellow-wave-top-left.png" alt="yellow wave" className="top-left-img" />
             <SectionTabs student={false} />
+            <h1 className="student-portal-title">Student Course Portal</h1>
             <section className="school-login-wrapper login-wrapper form-wrapper">
                 <h2 className="login-text">School Login</h2>
                 {error && <p className="login-failed">{error}</p>}
@@ -58,9 +58,9 @@ const SchoolLoginPage = () => {
                     />
                     <button
                         type="submit"
-                        className="base-btn"
+                        className="base-btn form-submit"
                     >
-                        Login
+                        Log In
                     </button>
                 </form>
                 <p className="form-link-wrap">

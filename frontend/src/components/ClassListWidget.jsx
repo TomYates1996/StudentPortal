@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import api from "../services/api";
 import CreateClassForm from "./CreateClassForm";
 
-const ClassListWidget = ({ fetchData, educators, schoolId }) => {
+const ClassListWidget = ({ fetchData, educators, schoolId, students }) => {
     const [classes, setClasses] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [expandedClassId, setExpandedClassId] = useState(null);
     const [allCourses, setAllCourses] = useState([]);
-    const [schoolStudents, setSchoolStudents] = useState([]);
     const [selectedStudentIds, setSelectedStudentIds] = useState([]);
     const [openAddStudents, setOpenAddStudents] = useState(false);
     const [openAddClass, setOpenAddClass] = useState(false);
@@ -15,14 +14,12 @@ const ClassListWidget = ({ fetchData, educators, schoolId }) => {
     useEffect(() => {
         const fetchData = async () => {
         try {
-            const [classRes, courseRes, studentRes] = await Promise.all([
+            const [classRes, courseRes] = await Promise.all([
             api.get(`/classes/school/${schoolId}`),
             api.get(`/school/courses/get/${schoolId}`),
-            api.get(`/student/school/${schoolId}`)
             ]);
             setClasses(classRes.data);
             setAllCourses(courseRes.data);
-            setSchoolStudents(studentRes.data);
         } catch (err) {
             console.error("Error fetching data:", err);
         }
@@ -53,7 +50,7 @@ const ClassListWidget = ({ fetchData, educators, schoolId }) => {
 
         setSelectedStudentIds([]); 
         } catch (err) {
-        console.error("Failed to add students", err);
+            console.error("Failed to add students", err);
         }
     };
 
@@ -104,7 +101,7 @@ const ClassListWidget = ({ fetchData, educators, schoolId }) => {
     };
 
     return (
-        <div className="class-list-widget">
+        <div className="class-list-widget list-widget">
             <div className="title-bar">
                 <h3>{openAddClass ? 'Add New Class' : 'Classes'}</h3>
                     <button onClick={() => setOpenAddClass(prev => !prev)} className="base-btn">
@@ -128,11 +125,11 @@ const ClassListWidget = ({ fetchData, educators, schoolId }) => {
                     onClose={() => setOpenAddClass(false)}
                 />
                 :
-                <ul className="class-list">
+                <ul className="class-list dashboard-list">
                     {filteredClasses.length > 0 ? (
                         filteredClasses.map(cls => (
-                        <li className="class-item" key={cls._id}>
-                        <div className="class-header">
+                        <li className="class-item dashboard-list-item" key={cls._id}>
+                        <div className="class-header item-header">
                             <p>{cls.name}</p>
                             <button
                             className="base-btn manage-btn"
@@ -143,7 +140,7 @@ const ClassListWidget = ({ fetchData, educators, schoolId }) => {
                         </div>
 
                         {expandedClassId === cls._id && (
-                            <div className="class-details">
+                            <div className="class-details item-details">
                                 <h4>Students</h4>
                                 <ul className="student-list class-inner-list">
                                     {cls.studentIds.length > 0 ? (
@@ -161,7 +158,7 @@ const ClassListWidget = ({ fetchData, educators, schoolId }) => {
                             <button onClick={() => setOpenAddStudents(prev => !prev)} className="base-btn">{openAddStudents ? 'Close' : 'Add'}</button>
                             {openAddStudents && (
                             <ul>
-                                {schoolStudents
+                                {students
                                 .filter(
                                     s => !cls.studentIds.some(cs => cs._id === s._id)
                                 )

@@ -61,5 +61,6 @@ router.post("/:classId/remove-course", async (req, res) => {
     }
 });
 
+router.get("/:studentId/", classController.getClassesForStudent);
 
 module.exports = router;

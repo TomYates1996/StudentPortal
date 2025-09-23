@@ -9,7 +9,7 @@ const SectionTabs = ({ student = true }) => {
                 Student
             </Link>
             <Link to="/school/login" className={`tab-btn base-btn ${ !student || location.pathname.includes("/school") ? "active" : "" }`}>
-                School
+                School/Teacher
             </Link>
         </div>
     );
