@@ -32,7 +32,7 @@ const CreateClassForm = ({ schoolId, educators, fetchData, onClose }) => {
             {message && <p>{message}</p>}
             <form className='form' onSubmit={handleCreateClass}>
                 <input
-                    className='form-input'
+                    className='form-input name-input'
                     type="text"
                     placeholder="Class Name"
                     value={newClassName}

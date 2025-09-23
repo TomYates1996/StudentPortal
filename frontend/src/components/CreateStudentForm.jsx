@@ -47,7 +47,7 @@ const CreateStudentForm = ({ schoolId, onClose, onStudentCreated }) => {
             <h3>Add Student</h3>
             <form className="form" onSubmit={handleAddStudent}>
                 <input
-                    className="form-input"
+                    className="form-input name-input"
                     type="text"
                     placeholder="Name"
                     value={newStudent.name}
@@ -57,7 +57,7 @@ const CreateStudentForm = ({ schoolId, onClose, onStudentCreated }) => {
                     required
                 />
                 <input
-                    className="form-input"
+                    className="form-input email-input"
                     type="email"
                     placeholder="Email"
                     value={newStudent.email}
@@ -67,7 +67,7 @@ const CreateStudentForm = ({ schoolId, onClose, onStudentCreated }) => {
                     required
                 />
                 <input
-                    className="form-input"
+                    className="form-input password-input"
                     type="password"
                     placeholder="Password"
                     value={newStudent.password}

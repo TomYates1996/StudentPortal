@@ -4,6 +4,7 @@ import api from "../services/api";
 const OverviewWidget = ({ schoolId }) => {
     const [studentCount, setStudentCount] = useState(0);
     const [courseCount, setCourseCount] = useState(0);
+    const [educatorCount, setEducatorCount] = useState(0);
 
     useEffect(() => {
         const fetchCounts = async () => {
@@ -15,6 +16,9 @@ const OverviewWidget = ({ schoolId }) => {
 
             const coursesRes = await api.get(`/school/courses/get/${schoolId}`);
             setCourseCount(coursesRes.data.length);
+
+            const educatorRes = await api.get(`/school/${schoolId}/educators`);
+            setEducatorCount(educatorRes.data.length);
         } catch (err) {
             console.error("Error fetching overview counts:", err);
         }
@@ -34,6 +38,10 @@ const OverviewWidget = ({ schoolId }) => {
                 <div className="student-item overview-item">
                     <p className="count">{studentCount}</p>
                     <p className="text">Total Students</p>
+                </div>
+                <div className="educator-item overview-item">
+                    <p className="count">{educatorCount}</p>
+                    <p className="text">Total Teachers</p>
                 </div>
             </div>
         </div>

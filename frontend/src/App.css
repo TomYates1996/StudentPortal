@@ -75,12 +75,13 @@ ul {
     font-size: 1.2rem;
     width: 100%;
     border: 2px solid var(--dark-blue);
-    border-radius: 16px;
+    border-radius: 10px;
     color: var(--white);
     background-color: var(--dark-blue);
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
+    max-width: 250px;
     @media (hover: hover) {
         &:hover {
             background-color: var(--button-colour-hover);
@@ -115,6 +116,7 @@ ul {
         border-radius: 0px;
         border: none;
         padding: 8px 16px;
+        cursor: pointer;
         color: var(--deep-purple);
         font-weight: 600;
         background-color: var(--light-purple);
@@ -161,6 +163,12 @@ h2 {
         margin-top: 20px;
         border-radius: 14px;
         border: 2px solid var(--deep-purple);
+        &.educators-section {
+            margin: 0px 20px 20px;
+            width: calc(100% - 40px);
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
         h2.login-text {
             color: var(--deep-purple);
             font-size: 1.8rem;
@@ -371,6 +379,16 @@ h2 {
         border-radius: 5px;
         width: 100%;
         /* border: 1px solid var(--accent); */
+    }
+    &.school-dashboard {
+        .button-school {
+            text-decoration: none;
+            border: none;
+            font-size: 1.125rem;
+            line-height: 1.2;
+            font-weight: 500;
+            text-align: left;
+        }
     }
 }
 
@@ -596,6 +614,12 @@ h2 {
     .overview-items {
         display: flex;
         gap: 20px;
+        flex-wrap: wrap; 
+        justify-content: center;
+        @media screen and (min-width: 420px) {
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+        }
         .overview-item {
             display: flex;
             flex-direction: column;
@@ -620,6 +644,7 @@ h2 {
     gap: 12px;
     padding: 0px 20px;
     width: 100%;
+    max-width: 600px;
     .dashboard-buttons {
         display: flex;
         justify-content: flex-start;
@@ -651,11 +676,19 @@ h2 {
     flex-direction: column;
     padding: 0px 20px;
     gap: 10px;
+    background-color: var(--light-blue);
+    border: 2px solid var(--deep-purple);
+    color: var(--deep-purple);
+    border-radius: 16px;
+    padding: 20px;
+    margin: 0px 20px;
+    max-width: calc(100% - 40px);
     .title-bar {
         display: flex;
         justify-content: space-between;
         align-items: center;
         width: 100%;
+        gap: 20px;
     }
     .input-search {
         padding: 10px;
@@ -666,8 +699,6 @@ h2 {
         display: flex;
         flex-direction: column;
         gap: 8px;
-        max-height: 320px;
-        overflow-y: scroll;
         .dashboard-list-item {
             display: flex;
             flex-direction: column;
@@ -798,5 +829,12 @@ h2 {
                 font-weight: 600;
             }
         }
+    }
+
+}
+.page {
+    .create-student-form,
+    .create-class-form {
+        padding: 20px;
     }
 }

@@ -146,144 +146,65 @@ const SchoolDashboard = () => {
             <section className="dashboard-details-top">
                 <OverviewWidget schoolId={schoolId} />
                 <div className="dashboard-buttons">
-                    <Link to="/school/browse-courses" className="base-btn light-blue-btn">Buy Courses</Link>
-                    <button className="base-btn light-green-btn" onClick={() => { document.getElementById("studentList")?.scrollIntoView({ behavior: "smooth" });}}>
+                    <Link to="/school/browse-courses" className="button-school light-blue-btn">Buy Courses</Link>
+                    <button className="button-school light-green-btn" onClick={() => { document.getElementById("studentList")?.scrollIntoView({ behavior: "smooth" });}}>
                         Add Students
                     </button>
                     
                 </div>
             </section>
-
-            <ClassListWidget fetchData={fetchData} educators={educators} schoolId={schoolId} students={students} />
-            <StudentListWidget schoolId={schoolId} students={students} onStudentCreated={(student) => setStudents((prev) => [...prev, student])} />
-
-            <div className="section-section">
-                <div className="tabs section-tabs">
-                    <button onClick={e => setSelectedSection('educators')} className={`base-btn tab-btn ${selectedSection === 'educators' ? 'active' : ''}`} >Teachers</button>
-                    {/* <button onClick={e => setSelectedSection('students')} className={`base-btn tab-btn ${selectedSection === 'students' ? 'active' : ''}`} >Students</button> */}
-                    {/* <button onClick={e => setSelectedSection('courses')} className={`base-btn tab-btn ${selectedSection === 'courses' ? 'active' : ''}`} >Manage Courses</button> */}
-                </div>
-
-                {selectedSection === 'educators' ? 
-                    <section className="form-wrapper dashboard-section educators-section">
-                        <h3>Teachers</h3>
-                        <ul>
-                            {educators.length > 0 ? 
-                                educators.map(edu => (
-                                    <li key={edu._id}>
-                                        {edu.name} ({edu.email})
-                                    </li>
-                                )) : 'No teachers/educators created yet.'}
-                        </ul>
-
-                        <h3>Add Teacher</h3>
-                        <form className='form' onSubmit={handleAddEducator}>
-                            <input
-                                className='form-input'
-                                type="text"
-                                placeholder="Name"
-                                value={newEducator.name}
-                                onChange={e => setNewEducator({ ...newEducator, name: e.target.value })}
-                                required
-                            />
-                            <input
-                                className='form-input'
-                                type="email"
-                                placeholder="Email"
-                                value={newEducator.email}
-                                onChange={e => setNewEducator({ ...newEducator, email: e.target.value })}
-                                required
-                            />
-                            <input
-                                className='form-input'
-                                type="password"
-                                placeholder="Password"
-                                value={newEducator.password}
-                                onChange={e => setNewEducator({ ...newEducator, password: e.target.value })}
-                                required
-                            />
-                            <button className='base-btn' type="submit">Add Educator</button>
-                        </form>
-                    </section> 
-                : selectedSection === 'classes' ?
-                    <section className="form-wrapper dashboard-section class-section">
-                        <h3>Classes</h3>
-                        <ul>
-                            {classes.length < 1 ? 
-                            'No classes created'
-                            : classes.map((c) => (
-                            <li key={c._id}>
-                                <strong>{c.name}</strong> — Teacher: {c.educatorId?.name} (
-                                {c.educatorId?.email}) <br />
-                                Students:{" "}
-                                {c.studentIds.length > 0
-                                ? c.studentIds.map((s) => s.name).join(", ")
-                                : "No students yet"}
-                            </li>
-                            ))}
-                        </ul>
-                        <h3>Create a Class</h3>
-                        <form className='form' onSubmit={handleCreateClass}>
-                            <input
-                            className='form-input'
-                            type="text"
-                            placeholder="Class Name"
-                            value={newClassName}
-                            onChange={(e) => setNewClassName(e.target.value)}
-                            required
-                            />
-                            <select
-                            className='form-select'
-                            value={selectedEducator}
-                            onChange={(e) => setSelectedEducator(e.target.value)}
-                            required
-                            >
-                            <option value="">Select Teacher</option>
-                            {educators.map((ed) => (
-                                <option key={ed._id} value={ed._id}>
-                                {ed.name} ({ed.email})
-                                </option>
-                            ))}
-                            </select>
-                            <button className='base-btn' type="submit">Create Class</button>
-                        </form>
-                    </section> 
-                : selectedSection === "courses" ?
-                    <section className="form-wrapper dashboard-section courses-section">
-                        <h3>Owned Courses</h3>
-                        <ul className="courses-list">
-                            {ownedCourses.map((course) => (
-                                <li key={course._id} className="course-item">
-                                    <div className="image-wrapper">
-                                        <img src={course.imageUrl || '/student-portal-logo.png'} alt={course.title} />
-                                        <p className="course-duration" >{course.courseLength} Hours</p>
-                                    </div>
-                                    <h3>{course.title}</h3>
-                                    {/* <p className='description'>{course.shortDescription}</p> */}
-                                    <div className="button-row">
-                                        {/* <button className="base-btn" onClick={ e => setSelectedCourse(course) }>More info</button> */}
-                                        {/* <button className="base-btn" onClick={ () => {setSelectedCourse(course); initialisePayment(course);} }>Buy now</button> */}
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                    </section>
-                : <h2>Welcome</h2> 
-                
-                }
+            <div className="tabs">
+                <button onClick={e => setSelectedSection('classes')} className={`tab-btn ${selectedSection === 'classes' ? 'active' : ''}`}>Classes</button>
+                <button onClick={e => setSelectedSection('students')} className={`tab-btn ${selectedSection === 'students' ? 'active' : ''}`}>Students</button>
+                <button onClick={e => setSelectedSection('educators')} className={`tab-btn ${selectedSection === 'educators' ? 'active' : ''}`}>Teachers</button>
             </div>
 
+            {selectedSection === 'classes' ? 
+            <ClassListWidget fetchData={fetchData} educators={educators} schoolId={schoolId} students={students} />
+            : selectedSection === 'students' ?
+            <StudentListWidget schoolId={schoolId} students={students} onStudentCreated={(student) => setStudents((prev) => [...prev, student])} />
+            : selectedSection === 'educators' ?
+            <section className="form-wrapper dashboard-section educators-section">
+                <h3>Teachers</h3>
+                <ul>
+                    {educators.length > 0 ? 
+                    educators.map(edu => (
+                        <li key={edu._id}>
+                            {edu.name} ({edu.email})
+                        </li>
+                    )) : 'No teachers/educators created yet.'}
+                </ul>
 
-            {/* <h3>Purchase Course for Students</h3>
-            <select value={selectedCourse} onChange={e => setSelectedCourse(e.target.value)}>
-            <option value="">Select a Course</option>
-            {courses.map(course => (
-                <option key={course._id} value={course._id}>
-                {course.title} - ${course.price}
-                </option>
-                ))}
-                </select>
-                <button onClick={handlePurchaseCourse}>Purchase & Enroll</button> */}
+                <h3>Add Teacher</h3>
+                <form className='form' onSubmit={handleAddEducator}>
+                    <input
+                        className='form-input name-input'
+                        type="text"
+                        placeholder="Name"
+                        value={newEducator.name}
+                        onChange={e => setNewEducator({ ...newEducator, name: e.target.value })}
+                        required
+                    />
+                    <input
+                        className='form-input email-input'
+                        type="email"
+                        placeholder="Email"
+                        value={newEducator.email}
+                        onChange={e => setNewEducator({ ...newEducator, email: e.target.value })}
+                        required
+                    />
+                    <input
+                        className='form-input password-input'
+                        type="password"
+                        placeholder="Password"
+                        value={newEducator.password}
+                        onChange={e => setNewEducator({ ...newEducator, password: e.target.value })}
+                        required
+                    />
+                    <button className='base-btn' type="submit">Add Educator</button>
+                </form>
+            </section> 
+        : null }
         </div>
     );
 };
