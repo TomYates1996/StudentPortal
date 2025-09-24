@@ -7,70 +7,124 @@ const Lesson = require("../src/models/Lesson");
 
 const MONGO_URI = process.env.MONGO_URI;
 
-async function seed() {
+const seed = async () => {
+  try {
     await mongoose.connect(MONGO_URI);
-    console.log("Connected to DB");
+    console.log("MongoDB connected");
 
+    // Clear existing data
     await Course.deleteMany({});
     await Module.deleteMany({});
     await Lesson.deleteMany({});
+    console.log("Old data cleared");
 
-    const course = await Course.create({
-        title: "Intro to Data Science",
-        shortDescription: "A beginner-friendly dive into data science basics.",
-        description: "Learn Python, statistics, and basic ML concepts in this structured course.",
-        price: 4999, 
+    const coursesData = [
+      {
+        title: "Intro to Algebra",
+        shortDescription: "Learn the basics of algebra and equations",
+        description: "This course introduces algebra for beginners.",
+        price: 2000,
+        courseLength: 15,
+        subject: "maths",
+        year: "Year 7",
+      },
+      {
+        title: "World War II History",
+        shortDescription: "Explore the events of WWII",
+        description: "Covers causes, key events, and outcomes of WWII.",
+        price: 2500,
         courseLength: 20,
-        imageUrl: "/student-portal-logo.png",
+        subject: "history",
+        year: "Year 9",
+      },
+      {
+        title: "Shakespeare’s Plays",
+        shortDescription: "Dive into Shakespeare’s famous works",
+        description: "Focus on Macbeth, Hamlet, and Romeo & Juliet.",
+        price: 1800,
+        courseLength: 12,
+        subject: "english",
+        year: "Year 10",
+      },
+      {
+        title: "Python Programming",
+        shortDescription: "Learn Python basics and problem solving",
+        description: "Covers syntax, loops, and small projects.",
+        price: 3000,
+        courseLength: 30,
         subject: "computer science",
-        status: "active"
-    });
+        year: "Year 11",
+      },
+      {
+        title: "Advanced Calculus",
+        shortDescription: "Deep dive into calculus for advanced students",
+        description: "Limits, derivatives, integrals, and applications.",
+        price: 4000,
+        courseLength: 40,
+        subject: "maths",
+        year: "Year 13",
+      },
+      {
+        title: "Creative Writing",
+        shortDescription: "Develop your storytelling and writing skills",
+        description: "Covers short stories, poems, and essays.",
+        price: 2200,
+        courseLength: 18,
+        subject: "english",
+        year: "Year 8",
+      },
+      {
+        title: "Tech and Society",
+        shortDescription: "Explore how technology impacts modern society",
+        description: "Discusses AI, ethics, and digital privacy.",
+        price: 3500,
+        courseLength: 25,
+        subject: "other",
+        year: "Year 12",
+      },
+    ];
 
-    const module1 = await Module.create({
-        courseId: course._id,
-        title: "Getting Started with Python",
-        description: "Setup and basics",
-        order: 1,
-    });
+    for (let c of coursesData) {
+      const course = new Course({ ...c, modules: [] });
+      await course.save();
 
-    const module2 = await Module.create({
-        courseId: course._id,
-        title: "Statistics Fundamentals",
-        description: "Mean, median, mode, variance",
-        order: 2,
-    });
+      for (let i = 1; i <= 3; i++) {
+        const module = new Module({
+          courseId: course._id,
+          title: `${course.title} - Module ${i}`,
+          description: `Covers part ${i} of ${course.title}`,
+          order: i,
+          lessons: [],
+        });
+        await module.save();
 
-    const lesson1 = await Lesson.create({
-            moduleId: module1._id,
-            title: "Installing Python & Jupyter",
-            contentType: "video",
-            contentUrl: "https://example.com/python-setup-video",
-            order: 1,
-            duration: 15
-    });
-
-    const lesson2 = await Lesson.create({
-            moduleId: module2._id,
-            title: "Descriptive Statistics",
+        for (let j = 1; j <= 3; j++) {
+          const lesson = new Lesson({
+            moduleId: module._id,
+            title: `${module.title} - Lesson ${j}`,
             contentType: "article",
-            contentUrl: "https://example.com/stats-article",
-            order: 1,
-            duration: 25
-    });
+            contentUrl: `https://example.com/${course.title.toLowerCase().replace(/\s/g, "-")}/module${i}/lesson${j}`,
+            order: j,
+            duration: 10 + j * 5,
+          });
+          await lesson.save();
 
-    module1.lessons.push(lesson1._id);
-    await module1.save();
+          module.lessons.push(lesson._id);
+        }
 
-    module2.lessons.push(lesson2._id);
-    await module2.save();
+        await module.save();
+        course.modules.push(module._id);
+      }
 
-    course.modules.push(module1._id, module2._id);
-    await course.save();
+      await course.save();
+      console.log(`Seeded: ${course.title}`);
+    }
 
     process.exit();
-}
+  } catch (err) {
+    console.error("Seeding error:", err);
+    process.exit(1);
+  }
+};
 
-seed().catch(err => {
-  console.error(err);
-  process.exit(1);
-});
+seed();

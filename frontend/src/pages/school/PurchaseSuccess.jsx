@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../services/api';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const PurchaseSuccess = () => {
     const navigate = useNavigate();
@@ -47,33 +47,34 @@ const PurchaseSuccess = () => {
     };
 
     return (
-        <div className="page">
-        <h2>Purchase Success!</h2>
-        {course && <h3>Purchased: {course.title}</h3>}
+        <div className="page purchase-success">
+            <h2>Purchase Success!</h2>
+            {course && <h3>Purchased: {course.title}</h3>}
 
-        <h4>Assign this course to classes:</h4>
-        <ul>
-            {classes.map(cls => (
-            <li key={cls._id}>
-                <label>
-                <input
-                    type="checkbox"
-                    value={cls._id}
-                    onChange={e => {
-                    if (e.target.checked) {
-                        setSelectedClasses([...selectedClasses, cls._id]);
-                    } else {
-                        setSelectedClasses(selectedClasses.filter(id => id !== cls._id));
-                    }
-                    }}
-                />
-                {cls.name}
-                </label>
-            </li>
-            ))}
-        </ul>
+            <h4>Assign this course to classes:</h4>
+            <ul>
+                {classes.map(cls => (
+                <li key={cls._id}>
+                    <label>
+                    <input
+                        type="checkbox"
+                        value={cls._id}
+                        onChange={e => {
+                        if (e.target.checked) {
+                            setSelectedClasses([...selectedClasses, cls._id]);
+                        } else {
+                            setSelectedClasses(selectedClasses.filter(id => id !== cls._id));
+                        }
+                        }}
+                    />
+                    {cls.name}
+                    </label>
+                </li>
+                ))}
+            </ul>
 
-        <button className='base-btn' onClick={handleAssign}>Assign Course</button>
+            <button className='base-btn' onClick={handleAssign}>Assign Course</button>
+            <Link to={`/school/dashboard`} className="later-text">Later</Link>
         </div>
     );
 };

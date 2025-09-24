@@ -8,4 +8,6 @@ router.get('/index', courseController.getCourses);
 
 router.get('/:id', courseController.getCourseById);
 
+router.get("/", courseController.getFilteredCourses);
+
 module.exports = router;
