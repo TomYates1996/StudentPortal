@@ -1,5 +1,7 @@
 const Course = require('../models/Course');
 const School = require('../models/School');
+const Module = require('../models/Module');
+const Lesson = require('../models/Lesson');
 
 exports.getCourses = async (req, res) => {
     try {
@@ -50,7 +52,15 @@ exports.getFilteredCourses = async (req, res) => {
         const courses = await Course.find(filter)
             .skip((page - 1) * limit)
             .limit(limit)
-            .sort({ createdAt: -1 });
+            .sort({ createdAt: -1 })  
+            .populate({
+                path: "modules",
+                options: { sort: { order: 1 } },
+                populate: {
+                path: "lessons",
+                options: { sort: { order: 1 } }
+                }
+            });
 
         res.json({ courses, totalPages, currentPage: page });
     } catch (err) {

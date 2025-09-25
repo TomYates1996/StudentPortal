@@ -790,9 +790,9 @@ h2 {
             justify-content: flex-start;
             align-items: center;
             padding: 8px 10px;
-            border: 1px solid var(--accent);
+            border: 1px solid var(--deep-purple);
             border-radius: 10px;
-            background-color: var(--tertiary-deep);
+            background-color: var(--white);
             .item-header {
                 width: 100%;
                 display: flex;
@@ -806,6 +806,7 @@ h2 {
             .manage-btn {
                 padding: 6px 12px;
                 font-size: .875rem;
+                max-width: 120px;
             }
             .item-details {
                 margin-top: 10px;
@@ -871,10 +872,23 @@ h2 {
         padding: 0px 0px 20px;
         overflow: hidden;
         width: 100%;
-        .class-name {
+        .class-name-box {
             background-color: var(--card-colour-2);
             color: var(--card-colour-text);
             padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .teacher {
+                color: var(--card-colour-text);
+                text-decoration: none;
+                font-weight: 600;
+                @media (hover : hover) {
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
         }
         .classmates-title {
             padding: 5px 20px;
@@ -883,6 +897,7 @@ h2 {
             padding: 0px 20px;
             display: flex;
             flex-wrap: wrap;
+            align-items: flex-end;
             gap: 6px;
             .class-students-item {
                 .student-icon {

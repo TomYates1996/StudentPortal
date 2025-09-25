@@ -164,21 +164,20 @@ const ClassListWidget = ({ fetchData, educators, schoolId, students }) => {
                                 )
                                 .map(student => (
                                     <li key={student._id}>
-                                    <label>
                                         <input
-                                        type="checkbox"
-                                        value={student._id}
-                                        checked={selectedStudentIds.includes(student._id)}
-                                        onChange={(e) =>
-                                            setSelectedStudentIds(prev =>
-                                            e.target.checked
-                                                ? [...prev, student._id]
-                                                : prev.filter(id => id !== student._id)
-                                            )
-                                        }
+                                            type="checkbox"
+                                            id={`student-${student._id}`}
+                                            value={student._id}
+                                            checked={selectedStudentIds.includes(student._id)}
+                                            onChange={(e) =>
+                                                setSelectedStudentIds(prev =>
+                                                    e.target.checked
+                                                        ? [...prev, student._id] 
+                                                        : prev.filter(id => id !== student._id) 
+                                                )
+                                            }
                                         />
-                                        {student.name}
-                                    </label>
+                                        <label htmlFor={`student-${student._id}`}>{student.name}</label>
                                     </li>
                                 ))}
                             </ul>

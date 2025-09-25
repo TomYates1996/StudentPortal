@@ -9,14 +9,12 @@ const BrowseCourses = () => {
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [message, setMessage] = useState('');
 
-    // filter states
     const [year, setYear] = useState('');
     const [subject, setSubject] = useState('');
     const [minDuration, setMinDuration] = useState('');
     const [maxDuration, setMaxDuration] = useState('');
     const [includeOwned, setIncludeOwned] = useState(false);
 
-    // pagination
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const coursesPerPage = 12;
@@ -41,7 +39,6 @@ const BrowseCourses = () => {
         }
     };
 
-    // fetch courses with backend filters + pagination
     const fetchCourses = async () => {
         try {
             const params = {
@@ -63,7 +60,6 @@ const BrowseCourses = () => {
         }
     };
 
-    // fetch owned courses separately so we can check
     const fetchOwnedCourses = async () => {
         try {
             const ownedRes = await api.get(`/school/courses/get/${schoolId}`);
@@ -207,11 +203,11 @@ const BrowseCourses = () => {
                         <div className="module-section">
                             <h3>Modules</h3>
                             <ul className="module-list">
-                                {selectedCourse.modules && selectedCourse.modules.map((module, idx) => (
-                                    <li key={idx} className="module-item">
-                                        <p className="module-value">{module}</p>
-                                    </li>
-                                ))}
+                            {selectedCourse.modules && selectedCourse.modules.map((module) => (
+                                <li key={module._id} className="module-item">
+                                <p className="module-value">{module.title}</p>
+                                </li>
+                            ))}
                             </ul>
                         </div>
                         <button className="base-btn" onClick={() => initialisePayment(selectedCourse)}>Purchase</button>
