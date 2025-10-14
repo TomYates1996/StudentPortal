@@ -1,22 +1,26 @@
-require("dotenv").config();
+require('dotenv').config();
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 const app = require('./app');
 
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/student-portal';
+const MONGO_URI = process.env.MONGO_URI;
 
+(async () => {
+    try {
+        if (!MONGO_URI) throw new Error('MONGO_URI not set');
 
-mongoose.connect(MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => {
-    console.log('MongoDB connected');
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
-    });
-})
-.catch((err) => {
-    console.error('MongoDB connection error:', err.message);
-});
+        console.log(
+            'Connecting to Mongo…',
+            process.env.MONGO_URI.replace(/\/\/.*@/, '//<redacted>@')
+        );
+        console.log('Connecting to Mongo…');
+        await mongoose.connect(MONGO_URI, {
+            serverSelectionTimeoutMS: 30000, 
+        });
+        console.log('MongoDB connected');
+    } catch (err) {
+        console.error('Mongo connection failed:', err.message);
+    } finally {
+        app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+    }
+})();

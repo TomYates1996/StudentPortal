@@ -1,0 +1,45 @@
+name: Deploy API to Azure Web App
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/deploy-backend.yml'
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Build (if any)
+        working-directory: backend
+        run: npm run build --if-present
+
+      - name: List backend files (debug)
+        run: ls -la backend
+
+      - name: Archive backend
+        run: |
+          cd backend
+          zip -r ../api.zip . -x "node_modules/*" ".git/*" ".github/*"
+
+      - name: Show zip contents (debug)
+        run: unzip -l api.zip | sed -n '1,200p'
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: StudentPortalAPI
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
+          package: ./api.zip
+
